@@ -1,0 +1,734 @@
+@prefix : <http://www.w3.org/2002/07/owl#> .
+@prefix wd: <https://www.wikidata.org/wiki/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pmo: <https://juandql.github.io/ontologies/parking-multicoding.ttl/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://www.w3.org/2002/07/owl#> .
+
+<https://juandql.github.io/ontologies/parking-multicoding.ttl> rdf:type owl:Ontology ;
+                                                                dcterms:contributor "Juan de Queiroz Leles" ;
+                                                                dcterms:description "An ontology about street parking spots in Berlin, describing their properties and attributes, with focus on the multicoding (re-purposing) of those spots."@en ,
+                                                                                    "Creative Commons Attribution 3.0 (CC BY 3.0)" ;
+                                                                dcterms:provenance """v1.0: First ontology for parking multicoding based on regulations on parklets for the city of Berlin.
+
+v2.0: Removing the class 'Street' and replacing it with an object property 'withinStreet'. Change of domain from properties 'hasSpeedLimit' and 'hasStreetID' to the class 'StreetParkingSpotGroup\". Addition of new property 'hasRestrictedDays' and 'withinDistrict'
+
+v3.0: Addind additional classes and properties to cover regulations on multicoding from other cities"""@en ;
+                                                                dcterms:title "parking multicoding ontology"@en ;
+                                                                rdfs:label "parking multicoding"@en ;
+                                                                owl:versionInfo 3.0 .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/description
+<http://purl.org/dc/elements/1.1/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/contributor
+dcterms:contributor rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+dcterms:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+dcterms:license rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/provenance
+dcterms:provenance rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+dcterms:title rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+skos:definition rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#note
+skos:note rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#prefLabel
+skos:prefLabel rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#scopeNote
+skos:scopeNote rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.opengis.net/ont/geosparql#wktLiteral
+geo:wktLiteral rdf:type rdfs:Datatype ;
+               skos:definition "A Well-known Text serialization of a Geometry object."@en ;
+               skos:prefLabel "Well-known Text Literal"@en .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.opengis.net/ont/geosparql#hasCentroid
+geo:hasCentroid rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf geo:hasGeometry ;
+                rdfs:domain geo:Feature ;
+                rdfs:range geo:Geometry ;
+                skos:definition "The arithmetric mean position of all the Geometry points of a given Feature."@en ,
+                                "The target Geometry shall describe a point, for example an instance of http://www.opengis.net/ont/sf#Point."@en ;
+                skos:prefLabel "has centroid"@en .
+
+
+###  http://www.opengis.net/ont/geosparql#hasGeometry
+geo:hasGeometry rdf:type owl:ObjectProperty ;
+                rdfs:domain geo:Feature ;
+                rdfs:range geo:Geometry ;
+                skos:definition "A spatial representation of a given Feature."@en ;
+                skos:prefLabel "has geometry"@en .
+
+
+###  http://www.w3.org/2002/07/owl#sameAs
+owl:sameAs rdf:type owl:ObjectProperty .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#hasRoadwayObstruction
+:hasRoadwayObstruction rdf:type owl:ObjectProperty ;
+                       rdfs:domain pmo:StreetParkingSpotGroup ;
+                       rdfs:range :RoadwayObstruction ;
+                       rdfs:label "Object property connecting street parking spots with potential roadway obstructions within its perimeter"@en ,
+                                  "has roadway obstructions"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/allowsFunction
+pmo:allowsFunction rdf:type owl:ObjectProperty ;
+                   rdfs:domain pmo:StreetParkingSpotGroup ;
+                   rdfs:range pmo:ParkingSpotFunction ;
+                   rdfs:comment "Object property describing the possible functions of the parking categories."@en ;
+                   rdfs:label "allows function"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasParkingOrientation
+pmo:hasParkingOrientation rdf:type owl:ObjectProperty ;
+                          rdfs:domain pmo:StreetParkingSpotGroup ;
+                          rdfs:range pmo:ParkingOrientation ;
+                          rdfs:comment "Object property associating the individuals of street parking spot group with their equivalent parking orientation (angled, parallel, perpendicular)."@en ;
+                          rdfs:label "has parking orientation"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasRestrictionReason
+pmo:hasRestrictionReason rdf:type owl:ObjectProperty ;
+                         rdfs:domain pmo:StreetParkingSpotGroup ;
+                         rdfs:range pmo:RestrictionReason ;
+                         rdfs:comment "Object property associating the possible restriction reason of a given parking category."@en ;
+                         rdfs:label "has restriction reason"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/withinParkingSite
+pmo:withinParkingSite rdf:type owl:ObjectProperty ;
+                      rdfs:domain pmo:StreetParkingSpotGroup ;
+                      rdfs:range pmo:ParkingSite ;
+                      rdfs:comment "Object property associating a street parking spot group with its physical location within a public street (parking by, full or half over a sidewalk, over lane)."@en ;
+                      rdfs:label "within parking site"@en .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.opengis.net/ont/geosparql#asWKT
+geo:asWKT rdf:type owl:DatatypeProperty ;
+          rdfs:subPropertyOf geo:hasSerialization ;
+          rdfs:domain geo:Geometry ;
+          rdfs:range geo:wktLiteral ;
+          skos:definition "The WKT serialization of a Geometry"@en ;
+          skos:prefLabel "as WKT"@en .
+
+
+###  http://www.opengis.net/ont/geosparql#hasSerialization
+geo:hasSerialization rdf:type owl:DatatypeProperty ;
+                     rdfs:domain geo:Geometry ;
+                     rdfs:range rdfs:Literal ;
+                     skos:definition "Connects a Geometry object with its text-based serialization."@en ;
+                     skos:prefLabel "has serialization"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#hasClearenceToHydrant
+:hasClearenceToHydrant rdf:type owl:DatatypeProperty ;
+                       rdfs:domain pmo:StreetParkingSpotGroup ;
+                       rdfs:range xsd:double ;
+                       rdfs:comment "Data property describing the clearence (distance in meters) to the closest hydrant to a given parking spot"@en ;
+                       rdfs:label "has clearance to hydrant"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#hasClearenceToIntersection
+:hasClearenceToIntersection rdf:type owl:DatatypeProperty ;
+                            rdfs:domain pmo:StreetParkingSpotGroup ;
+                            rdfs:range xsd:double ;
+                            rdfs:comment "Data property describing the clearence (distance in meters) to the closest intersection from a given parking spot"@en ;
+                            rdfs:label "has clearence to intersection"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#hasStreetSlope
+:hasStreetSlope rdf:type owl:DatatypeProperty ;
+                rdfs:domain pmo:StreetParkingSpotGroup ;
+                rdfs:range xsd:double ;
+                rdfs:comment "Data property describing the street slope (percentage value) from the street on which the parking spot is located"@en ;
+                rdfs:label "has street slopee"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasChargingStation
+pmo:hasChargingStation rdf:type owl:DatatypeProperty ;
+                       rdfs:domain pmo:StreetParkingSpotGroup ;
+                       rdfs:range xsd:boolean ;
+                       rdfs:comment "Data property associating a boolean value to the individuals of the class ParkingCategory. An individual with value 'true' is adapted for electrical vehicle parking. This property is built to follow the structure of the dataset of street parking spots from Berlin."@en ;
+                       rdfs:label "has charging station"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasNumberOfSpots
+pmo:hasNumberOfSpots rdf:type owl:DatatypeProperty ;
+                     rdfs:domain pmo:StreetParkingSpotGroup ;
+                     rdfs:range xsd:integer ;
+                     rdfs:comment "Data property associating a number (integer) to the individuals of the class StreetParkingSpotGroup. This number represents how many spots are in a given parking spot group. This property is built to follow the structure of the dataset of street parking spots from Berlin."@en ;
+                     rdfs:label "has number of spots"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasParkingGroupID
+pmo:hasParkingGroupID rdf:type owl:DatatypeProperty ;
+                      rdfs:domain pmo:StreetParkingSpotGroup ;
+                      rdfs:range xsd:integer ;
+                      rdfs:comment "Data property associating a number (integer) to the individuals of the class StreetParkingSpotGroup, as a unique individual identifier. This property is built to follow the structure of the dataset of street parking spots from Berlin Open Data."@en ;
+                      rdfs:label "has parking group id"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasRestrictedDays
+pmo:hasRestrictedDays rdf:type owl:DatatypeProperty ;
+                      rdfs:domain pmo:StreetParkingSpotGroup ;
+                      rdfs:range xsd:string ;
+                      rdfs:comment "Data property associating a string value (list of days of the week) to the individuals of the class StreetParkingSpotGroup. This property is built to follow the structure of the dataset of street parking spots from Berlin, where some parking spots have a restriction reason with a time validity."@en ;
+                      rdfs:label "has restricted days"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasSpeedLimit
+pmo:hasSpeedLimit rdf:type owl:DatatypeProperty ;
+                  rdfs:domain pmo:StreetParkingSpotGroup ;
+                  rdfs:range xsd:integer ;
+                  rdfs:comment "Data property associating a number (integer) to the individuals of the class StreetParkingSpotGroup. This number represents the traffic speed limit of the street where the parking spot group is located. This property is built based on the data retrieved in the dataset  called Tempolimit from Berlin Open Data."@en ;
+                  rdfs:label "has speed limit"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/hasStreetID
+pmo:hasStreetID rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf owl:topDataProperty ;
+                rdfs:domain pmo:StreetParkingSpotGroup ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Data property associating a number (integer) to the individuals of the class StreetParkingSpotGroup. This number represents the unique identifier of streets, where the parking spot group is located. This property is built based on the data retrieved in  the dataset Straßenabschnitte (RBS) from Berlin Open Data."@en ;
+                rdfs:label "has street id"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/isUniversallyAccessible
+pmo:isUniversallyAccessible rdf:type owl:DatatypeProperty ;
+                            rdfs:domain pmo:StreetParkingSpotGroup ;
+                            rdfs:range xsd:boolean ;
+                            rdfs:comment "Data property associating a boolean value to the individuals of the class ParkingCategory. An individual with value 'true' is universally accessible. This property is built to follow the structure of the dataset of street parking spots from Berlin."@en ;
+                            rdfs:label "is universally accessible"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/withinDistrict
+pmo:withinDistrict rdf:type owl:DatatypeProperty ;
+                   rdfs:domain pmo:StreetParkingSpotGroup ;
+                   rdfs:range xsd:string ;
+                   rdfs:comment "Data property associating a string to the individuals of the class StreetParkingSpotGroup. This string represents the name of the district where the parking spot group is located. This property is built based on the data retrieved in  the dataset Straßenabschnitte (RBS) from Berlin Open Data."@en ;
+                   rdfs:label "within district"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/withinParkingZone
+pmo:withinParkingZone rdf:type owl:DatatypeProperty ;
+                      rdfs:domain pmo:StreetParkingSpotGroup ;
+                      rdfs:range xsd:string ;
+                      rdfs:comment "Data property associating a string to the individuals of the class StreetParkingSpotGroup, representing the name/number of the given parking zone where the parking spot group is located. This property is built to follow the structure of the dataset of street parking spots from Berlin Open Data."@en ;
+                      rdfs:label "wihitn parking zone"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/withinStreet
+pmo:withinStreet rdf:type owl:DatatypeProperty ;
+                 rdfs:domain pmo:StreetParkingSpotGroup ;
+                 rdfs:range xsd:string ;
+                 rdfs:comment "Data property associating a string to the individuals of the class StreetParkingSpotGroup, representing the name of the street where the parking spot group is located. This property is built to follow the structure of the dataset of street parking spots from Berlin Open Data."@en ;
+                 rdfs:label "within street"@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.opengis.net/ont/geosparql#Feature
+geo:Feature rdf:type owl:Class ;
+            owl:equivalentClass pmo:StreetParkingSpotGroup ;
+            rdfs:subClassOf geo:SpatialObject ;
+            owl:disjointWith geo:Geometry ;
+            skos:definition "A discrete spatial phenomenon in a universe of discourse."@en ;
+            skos:note "A Feature represents a uniquely identifiable phenomenon, for example a river or an apple. While such phenomena (and therefore the Features used to represent them) are bounded, their boundaries may be crisp (e.g., the declared boundaries of a state), vague (e.g., the delineation of a valley versus its neighboring mountains), and change with time (e.g., a storm front). While discrete in nature, Features may be created from continuous observations, such as an isochrone that determines the region that can be reached by ambulance within 5 minutes."@en ;
+            skos:prefLabel "Feature"@en .
+
+
+###  http://www.opengis.net/ont/geosparql#Geometry
+geo:Geometry rdf:type owl:Class ;
+             rdfs:subClassOf geo:SpatialObject ;
+             skos:definition "A coherent set of direct positions in space. The positions are held within a Spatial Reference System (SRS)."@en ;
+             skos:note "Geometry can be used as a representation of the shape, extent or location of a Feature and may exist as a self-contained entity."@en ;
+             skos:prefLabel "Geometry"@en .
+
+
+###  http://www.opengis.net/ont/geosparql#SpatialObject
+geo:SpatialObject rdf:type owl:Class ;
+                  skos:definition "Anything spatial (being or having a shape, position or an extent)."@en ;
+                  skos:note "Subclasses of this class are expected to be used for instance data."@en ;
+                  skos:prefLabel "Spatial Object"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#RoadwayObstruction
+:RoadwayObstruction rdf:type owl:Class ;
+                    rdfs:comment "Road obstructions related to utilities (water, power, other networs) within limitis of a given parking spot."@en ;
+                    rdfs:label "Road Obstructions"@en .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/AlternativeFunction
+pmo:AlternativeFunction rdf:type owl:Class ;
+                        rdfs:subClassOf pmo:ParkingSpotFunction ;
+                        owl:disjointWith pmo:VehicleParkingFunction ;
+                        rdfs:comment "A class representing the individuals that allows other functions to the street parking spots than traditional vehicle parking. Those individuals are range for the object property 'allowsFunction'. Here alternative function is described in singular, but shall represent all the possible alternative functions that one could plan as a temporary use of a street parking spot (e.g. urban garden, terrace, street furniture, playground, etc.). This class was create to make explicit the disjonction with the class 'VehicleParkingFunction'." ;
+                        rdfs:label "Alternative Function" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/BusStop
+pmo:BusStop rdf:type owl:Class ;
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty pmo:hasRestrictionReason ;
+                                  owl:hasValue pmo:Bus-only_Lane
+                                ] ;
+            rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty pmo:allowsFunction ;
+                              owl:hasValue pmo:Vehicle_Parking
+                            ] ;
+            rdfs:comment "A class that is equivalent to the set of individuals that has the value 'Bus-only lane' (de: Bussonderfahrstreifen) for the property 'hasRestrictionReason'. For the inidividuals of this class no alternative function is allowed, only for vehicle parking (in this case bus stop)." ;
+            rdfs:label "Bus Stop" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/ElectricalVehicleParking
+pmo:ElectricalVehicleParking rdf:type owl:Class ;
+                             owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                   owl:onProperty pmo:hasChargingStation ;
+                                                   owl:hasValue "true"^^xsd:boolean
+                                                 ] ;
+                             rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty pmo:allowsFunction ;
+                                               owl:hasValue pmo:Vehicle_Parking
+                                             ] ;
+                             owl:disjointWith pmo:GeneralParking ,
+                                              pmo:LoadingZone ,
+                                              pmo:UniversallyAccessibleParking ;
+                             rdfs:comment "A class that is equivalent to the set of individuals that has the value 'true'  for the property 'hasChargingStation', describing the set of parking spots for eletrical vehicles. For the inidividuals of this class no alternative function is allowed, only for vehicle parking." ;
+                             rdfs:label "Eletrical Vehicles Parking" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/GeneralParking
+pmo:GeneralParking rdf:type owl:Class ;
+                   owl:equivalentClass [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                                owl:onProperty pmo:hasRestrictionReason ;
+                                                                owl:hasValue pmo:No_Restriction_Reason
+                                                              ]
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty pmo:hasChargingStation ;
+                                                                owl:hasValue "false"^^xsd:boolean
+                                                              ]
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty pmo:isUniversallyAccessible ;
+                                                                owl:hasValue "false"^^xsd:boolean
+                                                              ]
+                                                            ) ;
+                                         rdf:type owl:Class
+                                       ] ;
+                   rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty pmo:allowsFunction ;
+                                     owl:hasValue pmo:Alternative_Function
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty pmo:allowsFunction ;
+                                     owl:hasValue pmo:Vehicle_Parking
+                                   ] ;
+                   owl:disjointWith pmo:LoadingZone ,
+                                    pmo:TaxiParking ,
+                                    pmo:UniversallyAccessibleParking ;
+                   rdfs:comment "A class that is equivalent to the set of individuals that has the value 'NoRestrictionReason' for the property 'hasRestrictionReason', AND that has the value 'false' similtaneously for the properties 'IsUniversallyAccessible' and 'hasChargingStation'. Meaning: the individuals of this class has no parking restriction, are neither adequate for electrical vehicles nor suitable for accessible parking. For the inidividuals of this class an alternative function is allowed, other then the original vehicle parking function." ;
+                   rdfs:label "General Parking" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/LoadingZone
+pmo:LoadingZone rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Restriction ;
+                                      owl:onProperty pmo:hasRestrictionReason ;
+                                      owl:hasValue pmo:Loading_Zone
+                                    ] ;
+                rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty pmo:allowsFunction ;
+                                  owl:hasValue pmo:Vehicle_Parking
+                                ] ;
+                owl:disjointWith pmo:TaxiParking ,
+                                 pmo:UniversallyAccessibleParking ;
+                rdfs:comment "A class that is equivalent to the set of individuals that has the value 'LoadingZone' (de: Ladezone) for the property 'hasRestrictionReason'. For the inidividuals of this class no alternative function is allowed, only for vehicle parking for loading and deloading goods." ;
+                rdfs:label "Loading Zone" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/OfficialVehicleParking
+pmo:OfficialVehicleParking rdf:type owl:Class ;
+                           owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                 owl:onProperty pmo:hasRestrictionReason ;
+                                                 owl:hasValue pmo:Police_Vehicle-only
+                                               ] ;
+                           rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:allowsFunction ;
+                                             owl:hasValue pmo:Vehicle_Parking
+                                           ] ;
+                           rdfs:comment "A class that is equivalent to the set of individuals that has the value 'PoliceVehicleOnly' (de: Polizeifahrzeuge) for the property 'hasRestrictionReason'. For the inidividuals of this class no alternative function is allowed, only for police's vehicles parking." ;
+                           rdfs:label "Official Vehicles Parking" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/ParkingOrientation
+pmo:ParkingOrientation rdf:type owl:Class ;
+                       rdfs:comment "" ,
+                                    "A class for the inviduals describing the three possible street parking spot orientation (de: ausrichtung): angled parking, parallel parking and perpendicular parking." ;
+                       rdfs:label "Parking Orientation" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/ParkingSite
+pmo:ParkingSite rdf:type owl:Class ;
+                rdfs:comment "A class for the inviduals describing the four possible sites or locations within the public space in Berlin (de: parkort) of a given street parking spot : over a parking bay, full sidewalk, half sidewalk or over lane." ;
+                rdfs:label "Parking Site" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/ParkingSpotFunction
+pmo:ParkingSpotFunction rdf:type owl:Class ;
+                        rdfs:comment "A class containing two subclasses: AlternativeFunction and VehicleParkingFunction. This class describes the two possible functions of a street parking spot (vehicle parking and alternative function) and allows the attribution of those functions in relation to the class 'ParkingCategory' and its axioms." ;
+                        rdfs:label "Parking Spot Function" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/RestrictionReason
+pmo:RestrictionReason rdf:type owl:Class ;
+                      rdfs:comment "A class with all the individuals representing the different restriction reasons (de: grund fuer beschraenkung) of a given street parking spot, according to Berlin's dataset for parking spots. This class is range for the property 'hasRestrictionReason'." ;
+                      rdfs:label "Restriction Reason" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/StreetParkingSpotGroup
+pmo:StreetParkingSpotGroup rdf:type owl:Class ;
+                           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:hasParkingOrientation ;
+                                             owl:someValuesFrom pmo:ParkingOrientation
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:hasRestrictionReason ;
+                                             owl:someValuesFrom pmo:RestrictionReason
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:withinParkingSite ;
+                                             owl:someValuesFrom pmo:ParkingSite
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty :hasRoadwayObstruction ;
+                                             owl:allValuesFrom :RoadwayObstruction
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:hasNumberOfSpots ;
+                                             owl:someValuesFrom xsd:integer
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:hasParkingGroupID ;
+                                             owl:someValuesFrom xsd:integer
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:hasRestrictedDays ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:hasSpeedLimit ;
+                                             owl:someValuesFrom xsd:integer
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:hasStreetID ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:withinDistrict ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:withinParkingZone ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty pmo:withinStreet ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ;
+                           rdfs:comment "A class for describing all the individuals that can be found in the Berlin Dataset for street parking spots. Following the structure of the dataset, individuals of this class can represent parking spots with a single spot, as well of parking spots with multiple spots, therefore the name parking spots 'group'." ;
+                           rdfs:label "Street Parking Spot Group" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/TaxiParking
+pmo:TaxiParking rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Restriction ;
+                                      owl:onProperty pmo:hasRestrictionReason ;
+                                      owl:hasValue pmo:Taxi-only
+                                    ] ;
+                rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty pmo:allowsFunction ;
+                                  owl:hasValue pmo:Vehicle_Parking
+                                ] ;
+                owl:disjointWith pmo:UniversallyAccessibleParking ;
+                rdfs:comment "A class that is equivalent to the set of individuals that has the value 'TaxiOnly' (de: Taxi) for the property 'hasRestrictionReason'. For the inidividuals of this class no alternative function is allowed, only for the parking of taxis-." ;
+                rdfs:label "Taxi Parking" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/UniversallyAccessibleParking
+pmo:UniversallyAccessibleParking rdf:type owl:Class ;
+                                 owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                       owl:onProperty pmo:isUniversallyAccessible ;
+                                                       owl:hasValue "true"^^xsd:boolean
+                                                     ] ;
+                                 rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                                                 [ rdf:type owl:Restriction ;
+                                                   owl:onProperty pmo:allowsFunction ;
+                                                   owl:hasValue pmo:Vehicle_Parking
+                                                 ] ;
+                                 rdfs:comment "A class that is equivalent to the set of individuals that has the value 'true' for the property 'isUniversallyAccessible'. For the inidividuals of this class no alternative function is allowed, only for vehicle parking in spots adapted for universal accessibility." ;
+                                 rdfs:label "Universally Acessible Parking" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/UnkownParking
+pmo:UnkownParking rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty pmo:hasRestrictionReason ;
+                                        owl:hasValue pmo:Other_Restriction
+                                      ] ;
+                  rdfs:subClassOf pmo:StreetParkingSpotGroup ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty pmo:allowsFunction ;
+                                    owl:hasValue pmo:Vehicle_Parking
+                                  ] ;
+                  rdfs:comment "A class that is equivalent to the set of individuals that has the value 'OtherRestriction' (de: Andere Beschraenkungen) for the property 'hasRestrictionReason'. Since no information is provided in the dataset for street parking spots from Berlin, it is assumed that for the inidividuals of this class no alternative function is allowed, only for vehicle parking." ;
+                  rdfs:label "Unknow Parking" .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/VehicleParkingFunction
+pmo:VehicleParkingFunction rdf:type owl:Class ;
+                           rdfs:subClassOf pmo:ParkingSpotFunction ;
+                           rdfs:comment "A class representing the individuals that allows only the original function of a street parking spots:  vehicle parking. Those individuals are range for the object property 'allowsFunction'. This class was create to make explicit the disjonction with the class 'AlternativeFunction'." ;
+                           rdfs:label "Vehicle Parking Function" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#No_Obstruction
+:No_Obstruction rdf:type owl:NamedIndividual ,
+                         :RoadwayObstruction .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#Stormwater_Utilities
+:Stormwater_Utilities rdf:type owl:NamedIndividual ,
+                               :RoadwayObstruction .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl#Underground_Utilities
+:Underground_Utilities rdf:type owl:NamedIndividual ,
+                                :RoadwayObstruction .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Alternative_Function
+pmo:Alternative_Function rdf:type owl:NamedIndividual ,
+                                  pmo:AlternativeFunction .
+
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Angled_Parking
+pmo:Angled_Parking rdf:type owl:NamedIndividual ,
+                            pmo:ParkingOrientation ;
+                   owl:sameAs wd:Q3497478 .
+
+
+###  https://www.wikidata.org/wiki/Q3497478
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Bus-only_Lane
+pmo:Bus-only_Lane rdf:type owl:NamedIndividual ,
+                           pmo:RestrictionReason ;
+                  owl:sameAs wd:Q842314 .
+
+
+###  https://www.wikidata.org/wiki/Q842314
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Full_Sidewalk_Parking
+pmo:Full_Sidewalk_Parking rdf:type owl:NamedIndividual ,
+                                   pmo:ParkingSite ;
+                          owl:sameAs wd:Q131823509 .
+
+
+###  https://www.wikidata.org/wiki/Q131823509
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Half_Sidewalk_Parking
+pmo:Half_Sidewalk_Parking rdf:type owl:NamedIndividual ,
+                                   pmo:ParkingSite ;
+                          owl:sameAs wd:Q131823532 .
+
+
+###  https://www.wikidata.org/wiki/Q131823532
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Lane_Parking
+pmo:Lane_Parking rdf:type owl:NamedIndividual ,
+                          pmo:ParkingSite ;
+                 owl:sameAs wd:Q3222002 .
+
+
+###  https://www.wikidata.org/wiki/Q3222002
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Loading_Zone
+pmo:Loading_Zone rdf:type owl:NamedIndividual ,
+                          pmo:RestrictionReason ;
+                 owl:sameAs wd:Q131823769 .
+
+
+###  https://www.wikidata.org/wiki/Q131823769
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/No_Restriction_Reason
+pmo:No_Restriction_Reason rdf:type owl:NamedIndividual ,
+                                   pmo:RestrictionReason ;
+                          owl:sameAs wd:Q842314 .
+
+
+###  https://www.wikidata.org/wiki/Q842314
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Other_Restriction
+pmo:Other_Restriction rdf:type owl:NamedIndividual ,
+                               pmo:RestrictionReason ;
+                      owl:sameAs wd:Q55107540 .
+
+
+###  https://www.wikidata.org/wiki/Q55107540
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Parallel_Parking
+pmo:Parallel_Parking rdf:type owl:NamedIndividual ,
+                              pmo:ParkingOrientation ;
+                     owl:sameAs wd:Q527129 .
+
+
+###  https://www.wikidata.org/wiki/Q527129
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Parking_Bay
+pmo:Parking_Bay rdf:type owl:NamedIndividual ,
+                         pmo:ParkingSite ;
+                owl:sameAs wd:Q131823123 .
+
+
+###  https://www.wikidata.org/wiki/Q131823123
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Perpendicular_Parking
+pmo:Perpendicular_Parking rdf:type owl:NamedIndividual ,
+                                   pmo:ParkingOrientation ;
+                          owl:sameAs wd:Q3497475 .
+
+
+###  https://www.wikidata.org/wiki/Q3497475
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Police_Vehicle-only
+pmo:Police_Vehicle-only rdf:type owl:NamedIndividual ,
+                                 pmo:RestrictionReason ;
+                        owl:sameAs wd:Q131823913 .
+
+
+###  https://www.wikidata.org/wiki/Q131823913
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Taxi-only
+pmo:Taxi-only rdf:type owl:NamedIndividual ,
+                       pmo:RestrictionReason ;
+              owl:sameAs wd:Q1395196 .
+
+
+###  https://www.wikidata.org/wiki/Q1395196
+
+###  https://juandql.github.io/ontologies/parking-multicoding.ttl/Vehicle_Parking
+pmo:Vehicle_Parking rdf:type owl:NamedIndividual ,
+                             pmo:VehicleParkingFunction ;
+                    owl:sameAs wd:Q267917 .
+
+
+###  https://www.wikidata.org/wiki/Q267917
+
+###  https://www.wikidata.org/wiki/Q131823123
+wd:Q131823123 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q131823509
+wd:Q131823509 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q131823532
+wd:Q131823532 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q131823769
+wd:Q131823769 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q131823913
+wd:Q131823913 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q1395196
+wd:Q1395196 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q267917
+wd:Q267917 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q3222002
+wd:Q3222002 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q3497475
+wd:Q3497475 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q3497478
+wd:Q3497478 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q527129
+wd:Q527129 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q55107540
+wd:Q55107540 rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q842314
+wd:Q842314 rdf:type owl:NamedIndividual .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
